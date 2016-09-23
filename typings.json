@@ -1,0 +1,14 @@
+{
+  "globalDependencies": {
+    "body-parser": "registry:dt/body-parser#0.0.0+20160317120654",
+    "express": "registry:dt/express#4.0.0+20160317120654",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160322035842",
+    "js-yaml": "registry:dt/js-yaml#3.5.2+20160316171810",
+    "mime": "registry:dt/mime#0.0.0+20160316155526",
+    "node": "registry:dt/node#4.0.0+20160319033040",
+    "serve-static": "registry:dt/serve-static#0.0.0+20160317120654"
+  },
+  "dependencies": {
+    "swagger-tools": "github:swissspidy/typed-swagger-tools/swagger-tools.d.ts#5fb3f2956a1a3aaae4fe3158b75e665068e631ff"
+  }
+}
