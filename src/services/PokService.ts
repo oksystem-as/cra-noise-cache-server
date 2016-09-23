@@ -10,8 +10,4 @@ class PokService {
     }
 }
 
-var pok = new PokService();
-
-export function rootGET(req: any, res: any, next: any) {
-    return pok.rootGET(req, res, next);
-}
+export default PokService;
