@@ -1,8 +1,10 @@
 /// <reference path="../_all.d.ts" />
 
-import * as path from "url";
+import * as Lokijs from "lokijs";
 
 class PokService {
+
+    private db = new Lokijs("example.db");
 
     rootGET(req: any, res: any, next: any) {
         console.log("neco");

@@ -1,15 +1,90 @@
 ---
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "0.0.0"
-  title: "Simple API"
+  version: 1.0.0
+  title: Echo
+  description: |
+    #### Echos back every URL, method, parameter and header
+    Feel free to make a path or an operation and use **Try Operation** to test it. The echo server will
+    render back everything.
+schemes:
+  - http
+host: mazimi-prod.apigee.net
+basePath: /echo
 paths:
-  /:
+  /message/get/{devEUI}:
+    parameters:
+      - name: devEUI
+        in: path
+        description: ID čidla / zařízení.
+        type: string
+        required: true
+      - name: token
+        in: query
+        description: Slouží k autorizaci requestu a je unikátní pro každý soutěžní team. Pro jeho vygenerování kontaktujte ČRa.
+        type: string
+        required: true
+      - name: limit
+        in: query
+        description: Omezení počtu vypsaných záznamů. Hodnota musí být přirozeným číslem (1,2,3…N).
+        default: '25'
+        type: string
+        required: false
+      - name: offset
+        in: query
+        description: Posunutí prvního vypsaného záznamu o N záznamů. Hodnota musí být nezáporné celé číslo (0,1,2,3…N)
+        default: '0'
+        type: string
+        required: false
+      - name: order
+        in: query
+        description: Řazení záznamů dle časového razítka. Povolené hodnoty jsou asc nebo desc
+        default: desc
+        type: string
+        required: false
+      - name: start
+        in: query
+        description: Omezení výpisu zpráv od konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
+        type: string
+        required: false
+      - name: stop
+        in: query
+        description: Omezení výpisu zpráv do konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
+        type: string
+        required: false
     get:
-      operationId: "rootGET"
-      parameters: []
       responses:
         200:
-          description: "OK"
-      x-swagger-router-controller: "Pok"
-definitions: {}
+          description: Echo test-path
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/definitions/User'
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+      username:
+        type: string
+      full_name:
+        type: string
+      profile_picture:
+        type: string
+      bio:
+        type: string
+      website:
+        type: string
+      counts:
+        type: object
+        properties:
+          media:
+            type: integer
+          follows:
+            type: integer
+          follwed_by:
+            type: integer
