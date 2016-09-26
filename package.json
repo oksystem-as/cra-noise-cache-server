@@ -20,6 +20,7 @@
     "jade": "^1.11.0",
     "js-yaml": "^3.6.1",
     "lokijs": "^1.4.1",
+    "request": "^2.75.0",
     "swagger-tools": "^0.10.1",
     "swagger-ts": "0.0.18",
     "tslint": "^3.15.1",

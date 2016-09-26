@@ -7,6 +7,7 @@ import * as fs from "fs";
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as path from "path";
+import { LoadDeviceInfo } from "./services/LoadDeviceInfo";
 //import * as sys from "sys";
 //import webworker = require("webworker-threads");
 
@@ -57,6 +58,14 @@ class Server {
    * @return void
    */
   private config() {
+    let loadDeviceInfo = new LoadDeviceInfo();
+    loadDeviceInfo.update();
+
+    setInterval(function() {
+      let loadDeviceInfo = new LoadDeviceInfo();
+      loadDeviceInfo.update();
+      console.log("test");
+    }, 30000);
     //let worker = new Worker("");
     //configure jade
     //this.app.set("views", path.join(__dirname, "views"));
