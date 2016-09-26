@@ -40,6 +40,7 @@ class DeviceInfo {
     lrrid: string;
     lrrLAT: string;
     lrrLON: string;
+    lrrs: Array<Irrs>;
 
     constructor(deviceInfo: DeviceInfo) {
         this.createdAt = deviceInfo.createdAt;
@@ -59,10 +60,17 @@ class DeviceInfo {
         this.lrrid = deviceInfo.lrrid;
         this.lrrLAT = deviceInfo.lrrLAT;
         this.lrrLON = deviceInfo.lrrLON;
+        this.lrrs = deviceInfo.lrrs;
     }
 }
 
-class PokService {
+interface Irrs {
+    Lrrid: string;
+    LrrRSSI: string;
+    LrrSNR: string;
+}
+
+class DeviceInfoService {
 
     private db: Loki;
     private users: LokiCollection<DeviceInfo>;
@@ -93,14 +101,16 @@ class PokService {
             lrrid: "aaa",
             lrrLAT: "aaa",
             lrrLON: "aaa",
+            lrrs: [{ Lrrid: "Lrrid", LrrRSSI: "LrrRSSI", LrrSNR: "LrrSNR"}, { Lrrid: "Lrrid1", LrrRSSI: "LrrRSSI1", LrrSNR: "LrrSNR1"}]
          }));
         let result = this.users.chain().where(() => true).data();
         //result.forEach((value, index, array) => console.log(value));
         console.log(JSON.stringify(result));
         console.log("======================================");
         let jsonResult = new Result(result);
+        res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(jsonResult));
     }
 }
 
-export default PokService;
+export default DeviceInfoService;

@@ -12,9 +12,7 @@ basePath: /
 paths:
   /message/get/{devEUI}:
     get:
-      produces:
-      - application/json
-      x-swagger-router-controller: "Pok"
+      x-swagger-router-controller: "DeviceInfo"
       parameters:
         - name: devEUI
           in: path
@@ -55,6 +53,8 @@ paths:
           type: string
           required: false
       operationId: "rootGET"
+      produces:
+        - application/json
       responses:
         200:
           description: Slouží k výpisu jednotlivých zpráv z konkrétního zařízení.
