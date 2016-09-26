@@ -1,89 +1,23 @@
 /// <reference path="../_all.d.ts" />
 
+import * as DeviceInfoValue from "./DeviceInfoValue";
 import * as Lokijs from "lokijs";
 import * as http from "http";
-
-class Result {
-    _meta: Meta;
-    records: Array<DeviceInfo>;
-
-    constructor(records: Array<DeviceInfo>) {
-        this._meta = { status: "SUCCESS", count: records.length };
-        this.records = Array<DeviceInfo>(records.length);
-        records.forEach((element, index) => {
-            this.records[index] = new DeviceInfo(element);
-        });
-    }
-}
-
-interface Meta {
-    status: string;
-    count: number;
-}
-
-class DeviceInfo {
-
-    createdAt: string;
-    devEUI: string;
-    fPort: number;
-    fCntUp: number;
-    aDRBit: number;
-    fCntDn: number;
-    payloadHex: string;
-    micHex: string;
-    lrrRSSI: string;
-    lrrSNR: string;
-    spFast: number;
-    subBand: string;
-    channel: string;
-    devLrrCnt: number;
-    lrrid: string;
-    lrrLAT: string;
-    lrrLON: string;
-    lrrs: Array<Irrs>;
-
-    constructor(deviceInfo: DeviceInfo) {
-        this.createdAt = deviceInfo.createdAt;
-        this.devEUI = deviceInfo.devEUI;
-        this.fPort = deviceInfo.fPort;
-        this.fCntUp = deviceInfo.fCntUp;
-        this.aDRBit = deviceInfo.aDRBit;
-        this.fCntDn = deviceInfo.fCntDn;
-        this.payloadHex = deviceInfo.payloadHex;
-        this.micHex = deviceInfo.micHex;
-        this.lrrRSSI = deviceInfo.lrrRSSI;
-        this.lrrSNR = deviceInfo.lrrSNR;
-        this.spFast = deviceInfo.spFast;
-        this.subBand = deviceInfo.subBand;
-        this.channel = deviceInfo.channel;
-        this.devLrrCnt = deviceInfo.devLrrCnt;
-        this.lrrid = deviceInfo.lrrid;
-        this.lrrLAT = deviceInfo.lrrLAT;
-        this.lrrLON = deviceInfo.lrrLON;
-        this.lrrs = deviceInfo.lrrs;
-    }
-}
-
-interface Irrs {
-    Lrrid: string;
-    LrrRSSI: string;
-    LrrSNR: string;
-}
 
 class DeviceInfoService {
 
     private db: Loki;
-    private users: LokiCollection<DeviceInfo>;
+    private users: LokiCollection<DeviceInfoValue.DeviceInfo>;
 
     constructor() {
         this.db = new Lokijs("example.db");
-        this.users = this.db.addCollection<DeviceInfo>("deviceInfo");
+        this.users = this.db.addCollection<DeviceInfoValue.DeviceInfo>("deviceInfo");
     }
 
     rootGET(req: any, res: http.ServerResponse, next: any) {
         let devEUI = req.devEUI.value;
         let token  = req.token.value;
-        this.users.insert(new DeviceInfo({
+        this.users.insert(new DeviceInfoValue.DeviceInfo({
             createdAt: "aaa",
             devEUI: devEUI,
             fPort: 1,
@@ -107,7 +41,7 @@ class DeviceInfoService {
         //result.forEach((value, index, array) => console.log(value));
         console.log(JSON.stringify(result));
         console.log("======================================");
-        let jsonResult = new Result(result);
+        let jsonResult = new DeviceInfoValue.Result(result);
         res.setHeader("Content-Type", "application/json");
         res.end(JSON.stringify(jsonResult));
     }
