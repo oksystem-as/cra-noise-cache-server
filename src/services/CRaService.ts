@@ -1,6 +1,6 @@
 /// <reference path="../_all.d.ts" />
 
-//import http = require("http");
+import {Promise} from "es6-promise";
 import request = require("request");
 
 export class CRaService {
@@ -21,12 +21,9 @@ export class CRaService {
    * @param start Omezení výpisu zpráv od konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
    * @param stop Omezení výpisu zpráv do konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
   */
-  public getDeviceInfo(devEUI: string, limit?: string, offset?: string, order?: string, start?: string, stop?: string) {
+  public getDeviceInfo(devEUI: string, limit?: number, offset?: number, order?: string, start?: string, stop?: string) {
         const localVarPath = this.basePath + "/message/get/{devEUI}".replace("{" + "devEUI" + "}", String(devEUI));
         let queryParameters: any = {};
-        //let headerParams: any = this.extendObj({}, this.defaultHeaders);
-        //let formParams: any = {};
-
 
         // verify required parameter "devEUI" is not null or undefined
         if (devEUI === null || devEUI === undefined) {
@@ -68,13 +65,22 @@ export class CRaService {
             qs: queryParameters,
             json: true
         };
-        console.log(requestOptions);
-        request(requestOptions, (error, response, body) => {
-            if (error) {
-                console.error(error);
-             }
+
+        let p = new Promise<string>((resolve, reject) => {
+            request(requestOptions, (error, response, body) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve(body);
+            });
+        });
+        p.then((body) => {
+            console.log("promise");
             console.log(body);
         });
+
+        //var pCust: Promise<void>;
+
         /*
         return new Promise((resolve, reject) => {
             request(requestOptions, (error, response, body) => {

@@ -21,7 +21,7 @@ export class LoadDeviceInfo {
     update() {
         let cRaService = new CRaService();
         console.log("updaaaaaaaate");
-        cRaService.getDeviceInfo("0018B20000000336");
+        cRaService.getDeviceInfo("0018B20000000336", 1);
         console.log("tamta");
     }
 }
