@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "grunt": "grunt",
-    "start": "node ./bin/www"
+    "start": "node ./bin/server"
   },
   "author": "",
   "dependencies": {
@@ -23,6 +23,7 @@
     "swagger-tools": "^0.10.1",
     "swagger-ts": "0.0.18",
     "tslint": "^3.15.1",
-    "typescript": "^2.0.3"
+    "typescript": "^2.0.3",
+    "webworker": "^0.8.4"
   }
 }

@@ -7,6 +7,8 @@ import * as fs from "fs";
 import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as path from "path";
+//import * as sys from "sys";
+//import webworker = require("webworker-threads");
 
 //import * as indexRoute from "./routes/index";
 
@@ -55,6 +57,7 @@ class Server {
    * @return void
    */
   private config() {
+    //let worker = new Worker("");
     //configure jade
     //this.app.set("views", path.join(__dirname, "views"));
     //this.app.set("view engine", "jade");

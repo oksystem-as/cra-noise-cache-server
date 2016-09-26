@@ -5,7 +5,7 @@ import * as Lokijs from "lokijs";
 import * as http from "http";
 
 /**
- * Provádí načtení dat z API ČRa do In-memory DB.
+ * Provádí načtení dat z API ČRa do DB.
  */
 class LoadDeviceInfo {
 
@@ -16,4 +16,10 @@ class LoadDeviceInfo {
         this.db = new Lokijs("example.db");
         this.users = this.db.addCollection<DeviceInfoValue.DeviceInfo>("deviceInfo");
     }
+
+    update() {
+        console.log("update");
+    }
 }
+
+export default LoadDeviceInfo;

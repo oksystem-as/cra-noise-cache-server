@@ -5,6 +5,29 @@
 var app = require("../src/app");
 var debug = require("debug")("express:server");
 var http = require("http");
+var Worker = require('webworker-threads').Worker;
+var execute = require("../src/scheduler/Scheduler").execute;
+
+var worker = new Worker(function() {
+
+  this.onmessage = function(event) {
+    for(;;) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > (5*60*1000)) { // set timeout for scheduler (ms)
+          break;
+        }
+      }
+      postMessage();      
+    }
+    self.close();
+  };
+});
+
+worker.onmessage = execute; 
+
+worker.postMessage();
+
 
 //get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || 8080);
@@ -79,4 +102,13 @@ function onListening() {
     ? "pipe " + addr
     : "port " + addr.port;
   debug("Listening on " + bind);
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
