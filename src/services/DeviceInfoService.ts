@@ -22,8 +22,27 @@ class DeviceInfoService {
         let start: string = req.start.value;
         let stop: string = req.stop.value;
 
-        // TODO dodělat vyběr podle start a stop
-        let result = this.deviceData.chain().where((data) => data.devEUI === devEUI);
+        let startDate: Date;
+        let stopDate: Date;
+        if (start !== undefined && start !== null) {
+            startDate = new Date(start);
+        }
+        if (stop !== undefined && stop !== null) {
+            stopDate = new Date(stop);
+        }
+
+        let result = this.deviceData.chain().where((data) => {
+            let filter = data.devEUI === devEUI;
+            if (filter && startDate !== undefined && startDate !== null) {
+                let createdAt = new Date(data.createdAt);
+                filter = filter && startDate <= createdAt;
+            }
+            if (filter && stopDate !== undefined && stopDate !== null) {
+                let createdAt = new Date(data.createdAt);
+                filter = filter && stopDate >= createdAt;
+            }
+            return filter;
+        });
 
         if (offset !== undefined && offset !== null) {
             result = result.offset(offset);
