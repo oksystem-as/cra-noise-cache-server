@@ -1,19 +1,16 @@
 /// <reference path="../_all.d.ts" />
 
+import { CRaApiConfig } from "../Config";
 import { Result } from "./DeviceInfoValue";
-import {Promise} from "es6-promise";
+import { Promise } from "es6-promise";
 import request = require("request");
 
 export class CRaService {
-  // TODO kacalek presunout
-  private basePath = "http://api.pripoj.me";
-  private deviceBaseUrl = "device/get/";
-  private deviceDetailBaseUrl = "message/get/";
-  private token = "kBPIDfNdSfk8fkATerBa6ct6yshdPbOX";
+  private basePath = CRaApiConfig.basePath;
+  private deviceDetailBaseUrl = CRaApiConfig.deviceDetailBaseUrl;
+  private token = CRaApiConfig.token;
 
-  /**
-   * 
-   * 
+  /**    
    * @param devEUI ID čidla / zařízení.
    * @param token Slouží k autorizaci requestu a je unikátní pro každý soutěžní team. Pro jeho vygenerování kontaktujte ČRa.
    * @param limit Omezení počtu vypsaných záznamů. Hodnota musí být přirozeným číslem (1,2,3…N).
@@ -23,7 +20,7 @@ export class CRaService {
    * @param stop Omezení výpisu zpráv do konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
   */
   public getDeviceInfo(devEUI: string, limit?: number, start?: string, order?: string, offset?: number, stop?: string): Promise<Result> {
-        const localVarPath = this.basePath + "/message/get/{devEUI}".replace("{" + "devEUI" + "}", String(devEUI));
+        const localVarPath = this.basePath + this.deviceDetailBaseUrl.replace("{" + "devEUI" + "}", String(devEUI));
         let queryParameters: any = {};
 
         // verify required parameter "devEUI" is not null or undefined

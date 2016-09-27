@@ -4,117 +4,53 @@
 import * as swaggerTools from "swagger-tools";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
-import * as bodyParser from "body-parser";
 import * as express from "express";
-import * as path from "path";
 import { LoadDeviceInfo } from "./services/LoadDeviceInfo";
-//import * as sys from "sys";
-//import webworker = require("webworker-threads");
+import { LoadDevideConfig, CRaApiConfig } from "./Config";
 
-//import * as indexRoute from "./routes/index";
+namespace UpdateCache {
+  export let devEUIs: string[];
 
-/**
- * The server.
- *
- * @class Server
- */
+  export function updateCache() {
+    let loadDeviceInfo = new LoadDeviceInfo();
+    loadDeviceInfo.updateAll(devEUIs);
+  }
+}
+
 class Server {
 
   public app: express.Application;
 
-  /**
-   * Bootstrap the application.
-   *
-   * @class Server
-   * @method bootstrap
-   * @static
-   */
   public static bootstrap(): Server {
     return new Server();
   }
 
-  /**
-   * Constructor.
-   *
-   * @class Server
-   * @constructor
-   */
   constructor() {
     //create expressjs application
     this.app = express();
-
-    //configure application
-    this.config();
-
-    //configure routes
+    this.configCache();
     this.routes();
   }
 
-  /**
-   * Configure application
-   *
-   * @class Server
-   * @method config
-   * @return void
-   */
-  private config() {
-    let loadDeviceInfo = new LoadDeviceInfo();
-    loadDeviceInfo.update();
-    console.log("Start");
+  private configCache() {
+    var config = fs.readFileSync("config.yaml", "UTF-8");
+    var cacheConfig = jsYaml.safeLoad(config);
+    if (cacheConfig.token !== undefined && cacheConfig.token !== null) {
+      CRaApiConfig.token = cacheConfig.token;
+    }
+    UpdateCache.devEUIs = cacheConfig.devEUIs;
+
+    UpdateCache.updateCache();
     setInterval(function() {
       try {
-      let loadDeviceInfo = new LoadDeviceInfo();
-        loadDeviceInfo.update();
+        UpdateCache.updateCache();
       } catch (error) {
         console.error(error);
       }
-    }, 0.5 * 60 * 1000);
-    //let worker = new Worker("");
-    //configure jade
-    //this.app.set("views", path.join(__dirname, "views"));
-    //this.app.set("view engine", "jade");
-
-    //mount logger
-    //this.app.use(logger("dev"));
-
-    //mount json form parser
-    //this.app.use(bodyParser.json());
-
-    //mount query string parser
-    //this.app.use(bodyParser.urlencoded({ extended: true }));
-
-    //add static paths
-    //this.app.use("/docs", express.static(path.join(__dirname, "docs")));
-
-    // catch 404 and forward to error handler
-    /*this.app.use(function(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
-      var error = new Error("Not Found");
-      err.status = 404;
-      next(err);
-    });*/
+    }, LoadDevideConfig.updateInterval);
   }
 
-  /**
-   * Configure routes
-   *
-   * @class Server
-   * @method routes
-   * @return void
-   */
   private routes() {
-    //get router
-    //let router: express.Router;
-    //router = express.Router();
-
-    //create routes
-    //var index: indexRoute.Index = new indexRoute.Index();
-
-    //home page
-    //router.get("/", index.index.bind(index.index));
-
-    //use router middleware
-    //this.app.use(router);
-
     var spec = fs.readFileSync("docs/swagger.yaml", "UTF-8");
     var swaggerDoc = jsYaml.safeLoad(spec);
     swaggerTools.initializeMiddleware(swaggerDoc, middleware => {

@@ -20,19 +20,24 @@ export class LoadDeviceInfo {
         this.lastData = DBLoki.lastData;
     }
 
-    update() {
-        let devEUI = "0018B20000000336";
+    updateAll(devEUIs: string[]) {
+        devEUIs.forEach((devEUI) => {
+            this.update(devEUI);
+        });
+    }
+
+    update(devEUI: string) {
         let cRaService = new CRaService();
         let startDate = this.getStartDate(devEUI);
 
         let promise = cRaService.getDeviceInfo(devEUI, LoadDevideConfig.defautlLimit, startDate, "asc");
         promise.then((result) => {
             this.updateDB(devEUI, result);
-            console.log("Načteno " + result._meta.count + " záznamů.");
+            console.log(devEUI + ": Načteno " + result._meta.count + " záznamů.");
             if (result._meta.count > 0) {
-                this.update();
+                this.update(devEUI);
             } else {
-                console.log("Aktualizace provedena");
+                console.log(devEUI + ": Aktualizace provedena");
             }
         });
     }
