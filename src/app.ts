@@ -62,10 +62,13 @@ class Server {
     loadDeviceInfo.update();
 
     setInterval(function() {
+      try {
       let loadDeviceInfo = new LoadDeviceInfo();
-      loadDeviceInfo.update();
-      console.log("test");
-    }, 30000);
+        loadDeviceInfo.update();
+      } catch (error) {
+        console.error(error);
+      }
+    }, 0.5 * 60 * 1000);
     //let worker = new Worker("");
     //configure jade
     //this.app.set("views", path.join(__dirname, "views"));
@@ -114,7 +117,6 @@ class Server {
 
     var spec = fs.readFileSync("docs/swagger.yaml", "UTF-8");
     var swaggerDoc = jsYaml.safeLoad(spec);
-    console.log(swaggerDoc);
     swaggerTools.initializeMiddleware(swaggerDoc, middleware => {
       // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
       this.app.use(middleware.swaggerMetadata());

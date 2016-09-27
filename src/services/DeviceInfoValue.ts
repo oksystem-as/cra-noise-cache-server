@@ -64,3 +64,8 @@ export interface Irrs {
     LrrRSSI: string;
     LrrSNR: string;
 }
+
+export interface LastRecord {
+    devEUI: string;
+    createdAt: Date;
+}

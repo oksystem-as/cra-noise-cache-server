@@ -1,5 +1,6 @@
 /// <reference path="../_all.d.ts" />
 
+import { Result } from "./DeviceInfoValue";
 import {Promise} from "es6-promise";
 import request = require("request");
 
@@ -21,7 +22,7 @@ export class CRaService {
    * @param start Omezení výpisu zpráv od konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
    * @param stop Omezení výpisu zpráv do konkrétního data. Formát 2016-01-01T01:50:50. Zprávy jsou ukládány v časovém pásmu Europe/Prague.
   */
-  public getDeviceInfo(devEUI: string, limit?: number, offset?: number, order?: string, start?: string, stop?: string) {
+  public getDeviceInfo(devEUI: string, limit?: number, start?: string, order?: string, offset?: number, stop?: string): Promise<Result> {
         const localVarPath = this.basePath + "/message/get/{devEUI}".replace("{" + "devEUI" + "}", String(devEUI));
         let queryParameters: any = {};
 
@@ -66,35 +67,22 @@ export class CRaService {
             json: true
         };
 
-        let p = new Promise<string>((resolve, reject) => {
+        return new Promise<Result>((resolve, reject) => {
             request(requestOptions, (error, response, body) => {
                 if (error) {
-                    reject(error);
-                }
-                resolve(body);
-            });
-        });
-        p.then((body) => {
-            console.log("promise");
-            console.log(body);
-        });
-
-        //var pCust: Promise<void>;
-
-        /*
-        return new Promise((resolve, reject) => {
-            request(requestOptions, (error, response, body) => {
-                if (error) {
+                    console.error(error);
+                    console.error(body);
                     reject(error);
                 } else {
                     if (response.statusCode >= 200 && response.statusCode <= 299) {
-                        resolve({ response: response, body: body });
+                        console.log("OK");
+                        resolve(body);
                     } else {
-                        reject({ response: response, body: body });
+                        console.error(body);
+                        reject(body);
                     }
                 }
             });
         });
-        */
     }
 }
