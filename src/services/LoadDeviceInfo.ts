@@ -1,5 +1,6 @@
 /// <reference path="../_all.d.ts" />
 
+import { LoadDevideConfig } from "../Config";
 import { DBLoki } from "./BDLoki";
 import { Result, DeviceInfo, LastRecord } from "./DeviceInfoValue";
 import {Promise} from "es6-promise";
@@ -22,21 +23,30 @@ export class LoadDeviceInfo {
     update() {
         let devEUI = "0018B20000000336";
         let cRaService = new CRaService();
+        let startDate = this.getStartDate(devEUI);
 
+        let promise = cRaService.getDeviceInfo(devEUI, LoadDevideConfig.defautlLimit, startDate, "asc");
+        promise.then((result) => {
+            this.updateDB(devEUI, result);
+            console.log("Načteno " + result._meta.count + " záznamů.");
+            if (result._meta.count > 0) {
+                this.update();
+            } else {
+                console.log("Aktualizace provedena");
+            }
+        });
+    }
+
+    private getStartDate(devEUI: string): string {
         let lastRecords = this.getLastRecords(devEUI);
         let startDate: Date;
         if (lastRecords === null || lastRecords === undefined) {
-            startDate = new Date("2016-01-01T00:00:00+0000");
+            return this.dateToString(LoadDevideConfig.defautlStartDate);
         } else {
             startDate = lastRecords.createdAt;
             startDate.setUTCSeconds(startDate.getUTCSeconds() + 1);
+            return this.dateToString(startDate);
         }
-        console.log(this.dateToString(startDate));
-        let promise = cRaService.getDeviceInfo(devEUI, 10000, this.dateToString(startDate), "asc");
-        promise.then((result) => {
-            console.log(result._meta);
-            this.updateDB(devEUI, result);
-        });
     }
 
     private updateDB(devEUI: string, result: Result) {
@@ -46,8 +56,6 @@ export class LoadDeviceInfo {
                 this.deviceData.insert(deviceInfo);
                 lastRecords = this.lastRecords(lastRecords, {devEUI: deviceInfo.devEUI, createdAt: new Date(deviceInfo.createdAt) });
             });
-            console.log(result._meta);
-            console.log(lastRecords.createdAt);
             try {
                 this.lastData.removeWhere((data) => data.devEUI === devEUI);
             } catch (error) {
@@ -59,7 +67,6 @@ export class LoadDeviceInfo {
                     console.log(error);
                 }
             }
-            console.log("===============================================");
         }
     }
 

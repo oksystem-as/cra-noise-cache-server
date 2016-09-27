@@ -5,7 +5,7 @@ import { DeviceInfo, LastRecord } from "./DeviceInfoValue";
 
 export namespace DBLoki {
 
-    const DB = new Lokijs("example.db");
+    export const DB = new Lokijs("example.db");
     export const deviceData = DB.addCollection<DeviceInfo>("deviceData");
     export const lastData = DB.addCollection<LastRecord>("lastData", { unique: ["devEUI"] });
 }

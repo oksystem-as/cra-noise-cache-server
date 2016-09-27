@@ -75,7 +75,6 @@ export class CRaService {
                     reject(error);
                 } else {
                     if (response.statusCode >= 200 && response.statusCode <= 299) {
-                        console.log("OK");
                         resolve(body);
                     } else {
                         console.error(body);

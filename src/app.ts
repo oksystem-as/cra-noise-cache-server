@@ -60,7 +60,7 @@ class Server {
   private config() {
     let loadDeviceInfo = new LoadDeviceInfo();
     loadDeviceInfo.update();
-
+    console.log("Start");
     setInterval(function() {
       try {
       let loadDeviceInfo = new LoadDeviceInfo();
