@@ -1,6 +1,6 @@
 {
-  "name": "myapp",
-  "version": "1.0.0",
+  "name": "iot-lora-cra-cache",
+  "version": "0.1.0",
   "description": "",
   "scripts": {
     "grunt": "grunt",
