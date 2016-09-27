@@ -27,7 +27,6 @@ paths:
         - name: limit
           in: query
           description: Omezení počtu vypsaných záznamů. Hodnota musí být přirozeným číslem (1,2,3…N).
-          default: '25'
           type: string
           required: false
         - name: offset

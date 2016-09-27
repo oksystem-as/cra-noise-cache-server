@@ -2,8 +2,7 @@
 
 import { DBLoki } from "./BDLoki";
 import { Result, DeviceInfo } from "./DeviceInfoValue";
-import * as Lokijs from "lokijs";
-import * as http from "http";
+import { ServerResponse } from "http";
 
 class DeviceInfoService {
 
@@ -13,39 +12,38 @@ class DeviceInfoService {
         this.deviceData = DBLoki.deviceData;
     }
 
-    rootGET(req: any, res: http.ServerResponse, next: any) {
-        let devEUI = req.devEUI.value;
-        let token  = req.token.value;
-        /*
-        this.users.insert(new DeviceInfoValue.DeviceInfo({
-            createdAt: "aaa",
-            devEUI: devEUI,
-            fPort: 1,
-            fCntUp: 1,
-            aDRBit: 1,
-            fCntDn: 1,
-            payloadHex: "aaa",
-            micHex: "aaa",
-            lrrRSSI: "aaa",
-            lrrSNR: "aaa",
-            spFast: 1,
-            subBand: "aaa",
-            channel: "aaa",
-            devLrrCnt: 1,
-            lrrid: "aaa",
-            lrrLAT: "aaa",
-            lrrLON: "aaa",
-            lrrs: [{ Lrrid: "Lrrid", LrrRSSI: "LrrRSSI", LrrSNR: "LrrSNR"}, { Lrrid: "Lrrid1", LrrRSSI: "LrrRSSI1", LrrSNR: "LrrSNR1"}]
-         }));
-         */
-        let result = this.deviceData.chain().where((data) => data.devEUI === "0018B20000000336").data();
-        //let result = this.deviceData.find({ "devEUI": "0018B20000000336" }).data();
-        //result.forEach((value, index, array) => console.log(value));
-        //let result = this.deviceData.find();
-        //console.log(JSON.stringify(result));
-        console.log("======================================");
-        let jsonResult = new Result(result);
+    rootGET(req: any, res: ServerResponse, next: any) {
         res.setHeader("Content-Type", "application/json");
+
+        let devEUI: string = req.devEUI.value;
+        let limit: number = req.limit.value;
+        let offset: number = req.offset.value;
+        let order: string = req.order.value;
+        let start: string = req.start.value;
+        let stop: string = req.stop.value;
+
+        // TODO dodělat vyběr podle start a stop
+        let result = this.deviceData.chain().where((data) => data.devEUI === devEUI);
+
+        if (offset !== undefined && offset !== null) {
+            result = result.offset(offset);
+        }
+        if (limit !== undefined && limit !== null) {
+            result = result.limit(limit);
+        }
+        if (order !== undefined && order !== null && (order === "desc" || order === "asc")) {
+            result.sort((device1, device2) => {
+                let date1 = new Date(device1.createdAt);
+                let date2 = new Date(device2.createdAt);
+                if (date1 === date2) { return 0; }
+                if (order === "desc") {
+                    return date1 < date2 ? 1 : -1;
+                } else {
+                    return date1 < date2 ? -1 : 1;
+                }
+            });
+        }
+        let jsonResult = new Result(result.data());
         res.end(JSON.stringify(jsonResult));
     }
 }
