@@ -41,3 +41,5 @@ dist
 # Compiler generated
 src/**/*.js
 src/.baseDir.ts
+
+*.bak
