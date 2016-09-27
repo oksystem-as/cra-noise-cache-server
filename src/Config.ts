@@ -6,7 +6,7 @@ export namespace LoadDevideConfig {
     /** Limit kolik zaznamů se má vrátit v jednom dotazu na API ČRa */
     export const defautlLimit = 10000;
     /** Interval (v ms) po kterým se má kontrolovat aktuálnost cache. */
-    export const updateInterval = 0.5 * 60 * 1000;
+    export const updateInterval = 5 * 60 * 1000;
 }
 
 export namespace CRaApiConfig {
