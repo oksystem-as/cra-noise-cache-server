@@ -44,12 +44,6 @@ class DeviceInfoService {
             return filter;
         });
 
-        if (offset !== undefined && offset !== null) {
-            result = result.offset(offset);
-        }
-        if (limit !== undefined && limit !== null) {
-            result = result.limit(limit);
-        }
         if (order !== undefined && order !== null && (order === "desc" || order === "asc")) {
             result.sort((device1, device2) => {
                 let date1 = new Date(device1.createdAt);
@@ -62,6 +56,14 @@ class DeviceInfoService {
                 }
             });
         }
+
+        if (offset !== undefined && offset !== null) {
+            result = result.offset(offset);
+        }
+        if (limit !== undefined && limit !== null) {
+            result = result.limit(limit);
+        }
+
         let jsonResult = new Result(result.data());
         res.end(JSON.stringify(jsonResult));
     }
