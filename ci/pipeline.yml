@@ -1,0 +1,14 @@
+resources:
+- name: iot-lora-cra-cache
+  type: git
+  source:
+    uri: https://hndocker.oksystem.local/gitlab/IoT/iot-lora-cra-cache.git
+    skip_ssl_verification: true
+    branch: master
+
+jobs:
+- name: build
+  plan:
+  - get: iot-lora-cra-cache
+  - task: build
+    file: iot-lora-cra-cache/ci/build.yml
