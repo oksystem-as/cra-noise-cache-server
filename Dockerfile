@@ -5,10 +5,11 @@ WORKDIR /usr/src/iot-lora-cra-cache
 
 RUN npm install typings --global
 
-COPY . /usr/src/iot-lora-cra-cache \
-     && ls -l
+COPY . /usr/src/iot-lora-cra-cache
+RUN ls -l
 
-RUN npm install
+RUN npm install \
+    typings install
 RUN npm run grunt
 
 EXPOSE 8080

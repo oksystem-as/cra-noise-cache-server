@@ -1,6 +1,5 @@
 {
   "globalDependencies": {
-    "body-parser": "registry:dt/body-parser#0.0.0+20160317120654",
     "express": "registry:dt/express#4.0.0+20160317120654",
     "express-serve-static-core": "registry:dt/express-serve-static-core#0.0.0+20160322035842",
     "js-yaml": "registry:dt/js-yaml#3.5.2+20160316171810",
