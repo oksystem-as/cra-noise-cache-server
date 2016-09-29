@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "description": "",
   "scripts": {
+    "postinstall": "typings install",
+    "typings": "typings",
     "grunt": "grunt",
     "start": "node ./bin/server"
   },
@@ -23,7 +25,10 @@
     "request": "^2.75.0",
     "swagger-tools": "^0.10.1",
     "tslint": "^3.15.1",
-    "typescript": "^2.0.3",
     "webworker": "^0.8.4"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.3",
+    "typings":"^1.0.4"
   }
 }
