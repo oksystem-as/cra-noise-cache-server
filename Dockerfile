@@ -3,6 +3,7 @@ FROM node:argon
 RUN mkdir -p /usr/src/iot-lora-cra-cache
 WORKDIR /usr/src/iot-lora-cra-cache
 
+RUN ls -l
 COPY ./bin /usr/src/iot-lora-cra-cache
 COPY ./docs /usr/src/iot-lora-cra-cache
 COPY ./config.yaml /usr/src/iot-lora-cra-cache
