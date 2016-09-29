@@ -5,6 +5,7 @@ import * as swaggerTools from "swagger-tools";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 import * as express from "express";
+import * as morgan from "morgan";
 import { LoadDeviceInfo } from "./services/LoadDeviceInfo";
 import { LoadDevideConfig, CRaApiConfig } from "./Config";
 
@@ -28,6 +29,10 @@ class Server {
   constructor() {
     //create expressjs application
     this.app = express();
+
+    this.app.use(morgan(":remote-addr - :remote-user [:date[clf]] \":method :url HTTP/:http-version\" " +
+                        ":status :res[content-length] :response-time ms \":referrer\" \":user-agent\""));
+
     this.configCache();
     this.routes();
   }

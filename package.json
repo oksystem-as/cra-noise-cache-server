@@ -6,7 +6,7 @@
     "grunt": "grunt",
     "typings": "typings",
     "start": "node ./bin/server",
-    "postinstall": "typings install"
+    "postinstall": "npm run typings install"
   },
   "author": "",
   "dependencies": {
@@ -16,6 +16,7 @@
     "fs": "0.0.1-security",
     "js-yaml": "^3.6.1",
     "lokijs": "^1.4.1",
+    "morgan": "^1.7.0",
     "request": "^2.75.0",
     "swagger-tools": "^0.10.1"
   },
