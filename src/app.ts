@@ -5,9 +5,11 @@ import * as swaggerTools from "swagger-tools";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 import * as express from "express";
-import * as morgan from "morgan";
 import { LoadDeviceInfo } from "./services/LoadDeviceInfo";
 import { LoadDevideConfig, CRaApiConfig } from "./Config";
+import * as winston from "winston";
+var expressWinston = require("express-winston");
+require("console-winston")();
 
 namespace UpdateCache {
   export let devEUIs: string[];
@@ -30,8 +32,8 @@ class Server {
     //create expressjs application
     this.app = express();
 
-    this.app.use(morgan(":remote-addr - :remote-user [:date[clf]] \":method :url HTTP/:http-version\" " +
-                        ":status :res[content-length] :response-time ms \":referrer\" \":user-agent\""));
+    this.loggerConfig();
+
     this.app.use((req, res, next) => {
         res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE");
         res.header("Access-Control-Allow-Origin", "*");
@@ -76,6 +78,24 @@ class Server {
       // Serve the Swagger documents and Swagger UI
       this.app.use(middleware.swaggerUi());
      });
+  }
+
+  private loggerConfig() {
+    let logger = new winston.Logger({ transports: [ new winston.transports.Console({ json: true, colorize: true }) ] });
+
+    winston.remove(winston.transports.Console);
+    winston.add(winston.transports.Console, {
+      //level: "debug",
+      colorize: true
+    });
+
+    this.app.use(expressWinston.logger({
+      transports: [ new winston.transports.Console({ json: true, colorize: true }) ],
+      meta: true, // optional: control whether you want to log the meta data about the request (default to true) 
+      msg: "HTTP {{req.method}} {{req.url}}",
+      expressFormat: true,
+      colorize: true
+    }));
   }
 }
 

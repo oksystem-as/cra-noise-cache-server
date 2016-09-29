@@ -5,9 +5,9 @@
     "js-yaml": "registry:dt/js-yaml#3.5.2+20160316171810",
     "lokijs": "registry:dt/lokijs#0.0.0+20160316155526",
     "mime": "registry:dt/mime#0.0.0+20160316155526",
-    "morgan": "registry:dt/morgan#1.7.0+20160524142355",
     "node": "registry:dt/node#4.0.0+20160319033040",
-    "serve-static": "registry:dt/serve-static#0.0.0+20160317120654"
+    "serve-static": "registry:dt/serve-static#0.0.0+20160317120654",
+    "winston": "registry:dt/winston#0.0.0+20160417152829"
   },
   "dependencies": {
     "request": "github:louy/typed-request#40ab1aacbd0540b1fae02f89c8f94427524e27dc",
