@@ -73,7 +73,7 @@ class Server {
       this.app.use(middleware.swaggerValidator());
 
       // Route validated requests to appropriate controller
-      this.app.use(middleware.swaggerRouter({ controllers: "./src/routers" }));
+      this.app.use(middleware.swaggerRouter({ controllers: "dist/routers" }));
 
       // Serve the Swagger documents and Swagger UI
       this.app.use(middleware.swaggerUi());
