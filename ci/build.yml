@@ -10,7 +10,6 @@ inputs:
 - name: iot-lora-cra-cache
 
 run:
-    path: ls
-    args: ["-l", "ci/"]
-    #path: ./ci/build.sh
+    path: sh
+    args: ["./ci/build.sh"]
     dir: ./iot-lora-cra-cache
