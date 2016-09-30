@@ -121,6 +121,7 @@ jobs:
       - get: source
         passed: [build]
       - get: registry-snapshot
+        trigger: true
         passed: [build]
         params: {save: true}
       - get: alpine-node
