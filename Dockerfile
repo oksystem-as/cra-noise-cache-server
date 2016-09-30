@@ -1,4 +1,4 @@
-FROM node:slim
+FROM mhart/alpine-node:6.7.0
 
 RUN mkdir -p /usr/src/iot-lora-cra-cache
 WORKDIR /usr/src/iot-lora-cra-cache
