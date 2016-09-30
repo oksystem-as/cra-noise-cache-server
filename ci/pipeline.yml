@@ -1,4 +1,9 @@
 resources:
+- name: alpine-node
+  type: docker-image
+  source:
+    repository: mhart/alpine-node
+    tag: 6.7.0
 - name: registry-snapshot
   type: docker-image
   source:
@@ -78,7 +83,7 @@ jobs:
   - get: source
     trigger: true  
   - task: build
-    file: iot-lora-cra-cache/ci/build.yml            
+    file: source/ci/build.yml            
   - put: registry-snapshot
     params:
       build: binaries 
@@ -107,4 +112,50 @@ jobs:
   serial_groups: [ version ]
   plan:
     - put: version
-      params: { pre: rc }      
+      params: { pre: rc }
+- name: docker-compose
+  public: true
+  serial: true
+  plan:
+    - aggregate:
+      - get: source
+        passed: [build]
+      - get: registry-snapshot
+        passed: [build]
+        params: {save: true}
+      - get: alpine-node
+        params: {save: true}
+    - do:
+      - task: docker-compose
+        timeout: 20m
+        privileged: true
+        config:
+          platform: linux
+          image_resource:
+            type: docker-image
+            source: {repository: "mumoshu/dcind", tag: "latest"}
+          inputs:
+          - name: registry-snapshot
+          - name: alpine-node
+          - name: source  
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                mount -v
+                cat /proc/mounts
+                df -aT
+                source /docker-lib.sh
+                start_docker
+                docker images
+                docker load -i registry-snapshot/image
+                docker tag "$(cat registry-snapshot/image-id)" "$(cat registry-snapshot/repository):$(cat registry-snapshot/tag)"
+                docker load -i alpine-node/image
+                docker tag "$(cat alpine-node/image-id)" "$(cat alpine-node/repository):$(cat alpine-node/tag)"
+                docker images
+                docker ps
+                docker run -d -p 8080:8080 "$(cat registry-snapshot/repository):$(cat registry-snapshot/tag)"
+                docker ps
+                ls -l "$(pwd)/source/ci"
+                docker run --rm -it -v $(pwd)/source/ci:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" ls -l /tmp/test/

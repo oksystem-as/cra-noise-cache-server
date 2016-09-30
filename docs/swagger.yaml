@@ -89,7 +89,7 @@ definitions:
       fCntUp:
         type: integer
         description: Uplink counter paketu
-      aDRBit:
+      aDRbit:
         type: integer
       fCntDn:
         type: integer
@@ -106,7 +106,7 @@ definitions:
       lrrSNR:
         type: string
         description: Hodnota odstupu signálu od šumu z koncového zařízení na nejbližší GateWay
-      spFast:
+      spFact:
         type: integer
         description: Hodnota spreading factoru v komunikaci od koncového zařízení
       subBand:
