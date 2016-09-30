@@ -7,7 +7,7 @@ image_resource:
           }
 
 inputs:
-- name: iot-lora-cra-cache
+- name: source
 
 outputs:
 - name: binaries
@@ -15,4 +15,4 @@ outputs:
 run:
     path: sh
     args: ["./ci/build.sh"]
-    dir: ./iot-lora-cra-cache
+    dir: ./source

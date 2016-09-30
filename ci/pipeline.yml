@@ -1,10 +1,10 @@
 resources:
-- name: iot-lora-cra-cache-registry
+- name: registry-snapshot
   type: docker-image
   source:
     repository: hndocker.oksystem.local:40003/iot/iot-lora-cra-cache
-    username: kacis
-    password: {{docker-registry-password}}
+    username: {{username}}
+    password: {{password}}
     tag: snapshot
     ca_certs:
     - domain: hndocker.oksystem.local:443
@@ -53,21 +53,58 @@ resources:
         uMOUZV4WjEv+MCo3sVavPgtS9oscZw9hVlMBAcF42L/F1CkdAT1g0BIaj8gw7U9N
         pMI=
         -----END CERTIFICATE-----
-- name: iot-lora-cra-cache
+- name: source
   type: git
   source:
     uri: https://hndocker.oksystem.local/gitlab/IoT/iot-lora-cra-cache.git
+    username: {{username}}
+    password: {{password}}
     skip_ssl_verification: true
     branch: master
+
+- name: version
+  type: semver
+  source:
+    driver: git
+    uri: https://hndocker.oksystem.local/gitlab/IoT/iot-lora-cra-cache.git
+    branch: master
+    file: version
+    username: {{username}}
+    password: {{password}}    
 
 jobs:
 - name: build
   plan:
-  - get: iot-lora-cra-cache
+  - get: source
     trigger: true  
   - task: build
     file: iot-lora-cra-cache/ci/build.yml            
-  - put: iot-lora-cra-cache-registry
+  - put: registry-snapshot
     params:
       build: binaries 
     attempts: 3
+- name: major
+  serial_groups: [ version ]
+  plan:
+    - put: version
+      params: { pre: major }
+- name: minor
+  serial_groups: [ version ]
+  plan:
+    - put: version
+      params: { bump: minor }
+- name: patch
+  serial_groups: [ version ]
+  plan:
+    - put: version
+      params: { bump: patch }
+- name: final
+  serial_groups: [ version ]
+  plan:
+    - put: version
+      params: { bump: final }
+- name: rc
+  serial_groups: [ version ]
+  plan:
+    - put: version
+      params: { pre: rc }      
