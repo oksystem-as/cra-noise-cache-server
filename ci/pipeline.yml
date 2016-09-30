@@ -156,7 +156,7 @@ jobs:
                 docker tag "$(cat alpine-node/image-id)" "$(cat alpine-node/repository):$(cat alpine-node/tag)"
                 docker images
                 docker ps
-                docker run -d -p 8080:8080 "$(cat registry-snapshot/repository):$(cat registry-snapshot/tag)"
+                docker run -d -p 8080:8080 --name=test "$(cat registry-snapshot/repository):$(cat registry-snapshot/tag)"
                 docker ps
                 ls -l "$(pwd)/source/ci"
-                docker run --rm -it -v $(pwd)/source/ci:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" sh /tmp/test/test.sh
+                docker run --rm -it --link=test:test -v $(pwd)/source/ci:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" sh /tmp/test/test.sh
