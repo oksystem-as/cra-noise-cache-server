@@ -5,6 +5,7 @@ resources:
     repository: hndocker.oksystem.local:40003/iot/iot-lora-cra-cache
     username: kacis
     password: {{docker-registry-password}}
+    tag: snapshot
     ca_certs:
     - domain: hndocker.oksystem.local:443
       cert: | 
@@ -68,5 +69,5 @@ jobs:
     file: iot-lora-cra-cache/ci/build.yml            
   - put: iot-lora-cra-cache-registry
     params:
-      build: iot-lora-cra-cache 
-    attempts: 1  
+      build: binaries 
+    attempts: 3
