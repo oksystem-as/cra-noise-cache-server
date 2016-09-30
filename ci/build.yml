@@ -13,8 +13,6 @@ outputs:
 - name: binaries
 
 run:
-    path: ls
-    args: ["-l"]
-    #path: sh
-    #args: ["./ci/build.sh"]
-    #dir: ./iot-lora-cra-cache
+    path: sh
+    args: ["./ci/build.sh"]
+    dir: ./iot-lora-cra-cache
