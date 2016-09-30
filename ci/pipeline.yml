@@ -62,9 +62,10 @@ resources:
 jobs:
 - name: build
   plan:
-  - get: iot-lora-cra-cache  
+  - get: iot-lora-cra-cache
+    trigger: true  
   - task: build
-    file: iot-lora-cra-cache/ci/build.yml
+    file: iot-lora-cra-cache/ci/build.yml            
   - put: iot-lora-cra-cache-registry
     params:
       build: iot-lora-cra-cache 

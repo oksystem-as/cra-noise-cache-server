@@ -9,7 +9,12 @@ image_resource:
 inputs:
 - name: iot-lora-cra-cache
 
+outputs:
+- name: binaries
+
 run:
-    path: sh
-    args: ["./ci/build.sh"]
-    dir: ./iot-lora-cra-cache
+    path: ls
+    args: ["-l"]
+    #path: sh
+    #args: ["./ci/build.sh"]
+    #dir: ./iot-lora-cra-cache
