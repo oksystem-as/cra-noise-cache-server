@@ -1,4 +1,4 @@
-FROM node:argon
+FROM node:slim
 
 RUN mkdir -p /usr/src/iot-lora-cra-cache
 WORKDIR /usr/src/iot-lora-cra-cache
