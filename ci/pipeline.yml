@@ -158,4 +158,4 @@ jobs:
                 docker run -d -p 8080:8080 "$(cat registry-snapshot/repository):$(cat registry-snapshot/tag)"
                 docker ps
                 ls -l "$(pwd)/source/ci"
-                docker run --rm -it -v $(pwd)/source/ci:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" ls -l /tmp/test/
+                docker run --rm -it -v $(pwd)/source/ci:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" sh /tmp/test/test.sh
