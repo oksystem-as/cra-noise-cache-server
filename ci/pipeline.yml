@@ -170,22 +170,23 @@ jobs:
     params:
       build: binaries
       tag: version/version
+      tag_as_latest: true
     attempts: 3  
 - name: major
   serial_groups: [ version ]
   plan:
     - put: version
-      params: { bump: major, bump: rc }
+      params: { bump: major, pre: rc }
 - name: minor
   serial_groups: [ version ]
   plan:
     - put: version
-      params: { bump: minor, bump: rc }
+      params: { bump: minor, pre: rc }
 - name: patch
   serial_groups: [ version ]
   plan:
     - put: version
-      params: { bump: patch, bump: rc }
+      params: { bump: patch, pre: rc }
 - name: final
   serial_groups: [ version ]
   plan:
@@ -195,4 +196,4 @@ jobs:
   serial_groups: [ version ]
   plan:
     - put: version
-      params: { bump: rc }
+      params: { pre: rc }
