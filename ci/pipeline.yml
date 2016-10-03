@@ -83,7 +83,7 @@ jobs:
   - get: source
     trigger: true  
   - task: build
-    file: source/ci/build.yml            
+    file: source/ci/tasks/build.yml            
   - put: registry-snapshot
     params:
       build: binaries 
@@ -158,5 +158,5 @@ jobs:
                 docker ps
                 docker run -d -p 8080:8080 --name=test "$(cat registry-snapshot/repository):$(cat registry-snapshot/tag)"
                 docker ps
-                ls -l "$(pwd)/source/ci"
-                docker run --rm -it --link=test:test -v $(pwd)/source/ci:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" sh /tmp/test/test.sh
+                ls -l "$(pwd)/source/ci/tasks/tests/"
+                docker run --rm -it --link=test:test -v $(pwd)/source/ci/tasks/tests/:/tmp/test/ "$(cat alpine-node/repository):$(cat alpine-node/tag)" sh /tmp/test/test.sh
