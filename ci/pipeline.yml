@@ -128,4 +128,6 @@ jobs:
         params: {save: true}
     - do:
       - task: docker-compose
+        timeout: 20m
+        privileged: true
         file: source/ci/tasks/tests/test.yml
