@@ -1,2 +1,1 @@
-# cra-noise-cache
-server pro cra-noise-cache
+# cra-noise-statis-server
