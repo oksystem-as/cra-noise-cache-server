@@ -13,10 +13,13 @@ require("console-winston")();
 
 namespace UpdateCache {
   export let devEUIs: string[];
+  export let startup: boolean = false;
 
   export function updateCache() {
     let loadDeviceInfo = new LoadDeviceInfo();
-    loadDeviceInfo.updateAll(devEUIs);
+    loadDeviceInfo.updateAll(devEUIs).then((result) => {
+        startup = true;
+      });
   }
 }
 
@@ -40,6 +43,7 @@ class Server {
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         next();
     });
+    this.configStatusConfig();
     this.configCache();
     this.routes();
     this.app.listen(CRaApiConfig.serverPort);
@@ -103,6 +107,18 @@ class Server {
       expressFormat: true,
       colorize: true
     }));
+  }
+
+  private configStatusConfig() {
+    this.app.get("/startup", this.startUpGet);
+  }
+
+  private startUpGet(req: any, res: any, next: any) {
+    if (UpdateCache.startup) {
+      res.status(200).send();
+    } else {
+      res.status(503).send();
+    }
   }
 }
 

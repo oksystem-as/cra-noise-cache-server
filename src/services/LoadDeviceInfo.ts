@@ -20,25 +20,38 @@ export class LoadDeviceInfo {
         this.lastData = DBLoki.lastData;
     }
 
-    updateAll(devEUIs: string[]) {
-        devEUIs.forEach((devEUI) => {
-            this.update(devEUI);
+    updateAll(devEUIs: string[]): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            let devEUIsComplete = Array<string>();
+            devEUIs.forEach((devEUI) => {
+                this.update(devEUI).then((result) => {
+                    if (devEUIsComplete.find((valeu) => valeu === result) == null) {
+                        devEUIsComplete.push(result);
+                    }
+                    if (devEUIsComplete.length === devEUIs.length) {
+                        resolve(true);
+                    }
+                });
+            });
         });
     }
 
-    update(devEUI: string) {
+    update(devEUI: string): Promise<string> {
         let cRaService = new CRaService();
         let startDate = this.getStartDate(devEUI);
 
         let promise = cRaService.getDeviceInfo(devEUI, LoadDevideConfig.defautlLimit, startDate, "asc");
-        promise.then((result) => {
-            this.updateDB(devEUI, result);
-            console.log(devEUI + ": Načteno " + result._meta.count + " záznamů.");
-            if (result._meta.count > 0) {
-                this.update(devEUI);
-            } else {
-                console.log(devEUI + ": Aktualizace provedena");
-            }
+        return new Promise<string>((resolve, reject) => {
+            promise.then((result) => {
+                this.updateDB(devEUI, result);
+                console.log(devEUI + ": Načteno " + result._meta.count + " záznamů.");
+                if (result._meta.count > 0) {
+                    this.update(devEUI).then((res) => resolve(res));
+                } else {
+                    console.log(devEUI + ": Aktualizace provedena");
+                    resolve(devEUI);
+                }
+            });
         });
     }
 
