@@ -10,7 +10,8 @@ export namespace LoadDevideConfig {
 }
 
 export namespace CRaApiConfig {
-    export const basePath = "http://api.pripoj.me";
+    export let basePath = "http://api.pripoj.me";
     export const deviceDetailBaseUrl = "/message/get/{devEUI}";
     export let token = "kBPIDfNdSfk8fkATerBa6ct6yshdPbOX";
+    export let serverPort = 8080;
 }

@@ -42,6 +42,7 @@ class Server {
     });
     this.configCache();
     this.routes();
+    this.app.listen(CRaApiConfig.serverPort);
   }
 
   private configCache() {
@@ -49,6 +50,12 @@ class Server {
     var cacheConfig = jsYaml.safeLoad(config);
     if (cacheConfig.token !== undefined && cacheConfig.token !== null) {
       CRaApiConfig.token = cacheConfig.token;
+    }
+    if (cacheConfig.serverPort !== undefined && cacheConfig.serverPort !== null) {
+      CRaApiConfig.serverPort = cacheConfig.serverPort;
+    }
+    if (cacheConfig.basePath !== undefined && cacheConfig.basePath !== null) {
+      CRaApiConfig.basePath = cacheConfig.basePath;
     }
     UpdateCache.devEUIs = cacheConfig.devEUIs;
 
