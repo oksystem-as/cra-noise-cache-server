@@ -3,3 +3,8 @@ basePath: "http://api.pripoj.me"
 serverPort: 8082
 devEUIs:
 - "0004A30B0019D0EA"
+cutData:
+- data:
+    start: 2016-11-1
+    devEUI: 
+    - "0004A30B0019D0EA"
