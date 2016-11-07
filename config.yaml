@@ -5,6 +5,6 @@ devEUIs:
 - "0004A30B0019D0EA"
 cutData:
 - data:
-    start: 2016-11-1
-    devEUI: 
+    start: 2016-10-25
+    devEUIs: 
     - "0004A30B0019D0EA"

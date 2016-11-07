@@ -62,6 +62,7 @@ class Server {
       CRaApiConfig.basePath = cacheConfig.basePath;
     }
     UpdateCache.devEUIs = cacheConfig.devEUIs;
+    LoadDevideConfig.cutData = cacheConfig.cutData;
 
     UpdateCache.updateCache();
     setInterval(function() {

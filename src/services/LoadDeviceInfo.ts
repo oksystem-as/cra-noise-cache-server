@@ -59,12 +59,27 @@ export class LoadDeviceInfo {
         let lastRecords = this.getLastRecords(devEUI);
         let startDate: Date;
         if (lastRecords === null || lastRecords === undefined) {
-            return this.dateToString(LoadDevideConfig.defautlStartDate);
+            let cutDate = this.getCutDate(devEUI);
+            if (cutDate == null) {
+                return this.dateToString(LoadDevideConfig.defautlStartDate);
+            } else {
+                console.warn(this.dateToString(cutDate));
+                return this.dateToString(cutDate);
+            }
         } else {
             startDate = lastRecords.createdAt;
             startDate.setUTCSeconds(startDate.getUTCSeconds() + 1);
             return this.dateToString(startDate);
         }
+    }
+
+    private getCutDate(devEUI: string): Date {
+        let cutValue = LoadDevideConfig.cutData.find((value) => value.data.devEUIs.find((it) => it === devEUI) != null);
+        if (cutValue == null) {
+            return undefined;
+        }
+        let cutDate = new Date(cutValue.data.start);
+        return cutDate;
     }
 
     private updateDB(devEUI: string, result: Result) {
