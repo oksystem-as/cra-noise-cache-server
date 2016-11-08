@@ -3,7 +3,7 @@
 import { LoadDevideConfig } from "../Config";
 import { DBLoki } from "./BDLoki";
 import { Result, DeviceInfo, LastRecord } from "./DeviceInfoValue";
-import {Promise} from "es6-promise";
+import { Promise } from "es6-promise";
 import { CRaService } from "./CRaService";
 import * as Lokijs from "lokijs";
 
@@ -63,7 +63,6 @@ export class LoadDeviceInfo {
             if (cutDate == null) {
                 return this.dateToString(LoadDevideConfig.defautlStartDate);
             } else {
-                console.warn(this.dateToString(cutDate));
                 return this.dateToString(cutDate);
             }
         } else {

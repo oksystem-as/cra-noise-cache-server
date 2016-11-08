@@ -5,7 +5,9 @@ import * as swaggerTools from "swagger-tools";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 import * as express from "express";
+import { CreateMockData } from "./services/CreateMockData";
 import { LoadDeviceInfo } from "./services/LoadDeviceInfo";
+import { LoadMockData } from "./services/LoadMockData";
 import { LoadDevideConfig, CRaApiConfig } from "./Config";
 import * as winston from "winston";
 var expressWinston = require("express-winston");
@@ -14,11 +16,21 @@ require("console-winston")();
 namespace UpdateCache {
   export let devEUIs: string[];
   export let startup: boolean = false;
+  export let startupMock: boolean = false;
+  export let startupProd: boolean = false;
 
   export function updateCache() {
+    let loadMockDeviceInfo = new LoadMockData();
+    if (!startup) {
+      loadMockDeviceInfo.loadAll().then((result) => {
+        startupMock = true;
+        startup = startupMock && startupProd;
+      });
+    }
     let loadDeviceInfo = new LoadDeviceInfo();
     loadDeviceInfo.updateAll(devEUIs).then((result) => {
-        startup = true;
+        startupProd = true;
+        startup = startupMock && startupProd;
       });
   }
 }
@@ -34,7 +46,7 @@ class Server {
   constructor() {
     //create expressjs application
     this.app = express();
-
+/*
     this.loggerConfig();
 
     this.app.use((req, res, next) => {
@@ -47,6 +59,10 @@ class Server {
     this.configCache();
     this.routes();
     this.app.listen(CRaApiConfig.serverPort);
+*/
+    let fromDate = new Date("2016-01-01");
+    let toDate = new Date("2016-01-02");
+    new CreateMockData().createMockData("AAAAAA", fromDate, toDate);
   }
 
   private configCache() {
