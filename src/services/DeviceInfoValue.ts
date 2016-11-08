@@ -18,24 +18,24 @@ export interface Meta {
 
 export class DeviceInfo {
 
-    createdAt: string;
-    devEUI: string;
-    fPort: number;
-    fCntUp: number;
-    aDRbit: number;
-    fCntDn: number;
-    payloadHex: string;
-    micHex: string;
-    lrrRSSI: string;
-    lrrSNR: string;
-    spFact: number;
-    subBand: string;
-    channel: string;
-    devLrrCnt: number;
-    lrrid: string;
-    lrrLAT: string;
-    lrrLON: string;
-    lrrs: Array<Irrs>;
+    createdAt?: string;
+    devEUI?: string;
+    fPort?: number;
+    fCntUp?: number;
+    aDRbit?: number;
+    fCntDn?: number;
+    payloadHex?: string;
+    micHex?: string;
+    lrrRSSI?: string;
+    lrrSNR?: string;
+    spFact?: number;
+    subBand?: string;
+    channel?: string;
+    devLrrCnt?: number;
+    lrrid?: string;
+    lrrLAT?: string;
+    lrrLON?: string;
+    lrrs?: Array<Irrs>;
 
     constructor(deviceInfo: DeviceInfo) {
         this.createdAt = deviceInfo.createdAt;

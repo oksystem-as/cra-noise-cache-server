@@ -73,11 +73,11 @@ export class LoadDeviceInfo {
     }
 
     private getCutDate(devEUI: string): Date {
-        let cutValue = LoadDevideConfig.cutData.find((value) => value.data.devEUIs.find((it) => it === devEUI) != null);
+        let cutValue = LoadDevideConfig.cutData.find((value) => value.devEUIs.find((it) => it === devEUI) != null);
         if (cutValue == null) {
             return undefined;
         }
-        let cutDate = new Date(cutValue.data.start);
+        let cutDate = new Date(cutValue.start);
         return cutDate;
     }
 

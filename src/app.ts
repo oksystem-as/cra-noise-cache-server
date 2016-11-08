@@ -5,7 +5,6 @@ import * as swaggerTools from "swagger-tools";
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 import * as express from "express";
-import { CreateMockData } from "./services/CreateMockData";
 import { LoadDeviceInfo } from "./services/LoadDeviceInfo";
 import { LoadMockData } from "./services/LoadMockData";
 import { LoadDevideConfig, CRaApiConfig } from "./Config";
@@ -22,7 +21,7 @@ namespace UpdateCache {
   export function updateCache() {
     let loadMockDeviceInfo = new LoadMockData();
     if (!startup) {
-      loadMockDeviceInfo.loadAll().then((result) => {
+      loadMockDeviceInfo.loadAll(LoadDevideConfig.mockData).then((result) => {
         startupMock = true;
         startup = startupMock && startupProd;
       });
@@ -59,11 +58,6 @@ class Server {
     this.configCache();
     this.routes();
     this.app.listen(CRaApiConfig.serverPort);
-/*
-    let fromDate = new Date("2016-01-01");
-    let toDate = new Date("2017-01-01");
-    new CreateMockData().createMockData("0004A30B0019D0EB", fromDate, toDate);
-*/
   }
 
   private configCache() {
@@ -80,6 +74,7 @@ class Server {
     }
     UpdateCache.devEUIs = cacheConfig.devEUIs;
     LoadDevideConfig.cutData = cacheConfig.cutData;
+    LoadDevideConfig.mockData = cacheConfig.mockData;
 
     UpdateCache.updateCache();
     setInterval(function() {

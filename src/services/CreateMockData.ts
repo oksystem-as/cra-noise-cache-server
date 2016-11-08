@@ -7,19 +7,14 @@ import { DeSenseNoisePayloadCreator } from "../payloads/DeSenseNoisePayloadCreat
 import * as jsYaml from "js-yaml";
 import * as fs from "fs";
 
-class MockData {
+export class MockData {
     devEUI: string;
-    records: Record[];
-}
-
-class Record {
-    createdAt: string;
-    payloadHex: string;
+    records: DeviceInfo[];
 }
 
 export class CreateMockData {
 
-    createMockData(devEUI: string, fromDate: Date, toDate: Date) {
+    createMockData(devEUI: string, fromDate: Date, toDate: Date): MockData {
         let createdAt = new Date(fromDate);
         let mockData = new MockData();
         mockData.devEUI = devEUI;
@@ -27,24 +22,20 @@ export class CreateMockData {
         while (createdAt.getTime() < toDate.getTime()) {
             let randomData = this.createRandomNoiseSensorData(createdAt);
             let randomPayload = this.getNoiseSensorPayload(randomData);
-            mockData.records.push(this.toMockYaml(createdAt, randomPayload));
+            mockData.records.push(this.toMockYaml(devEUI, createdAt, randomPayload));
             createdAt.setMinutes(createdAt.getMinutes() + 5);
         }
-        this.saveToFile(mockData);
+        return mockData;
     }
 
-    private toMockYaml(createdAt: Date, payload: string): Record {
-        let mockDeviceInfo = new Record();
+    private toMockYaml(devEUI: string, createdAt: Date, payload: string): DeviceInfo {
+        let mockDeviceInfo: DeviceInfo = { };
         mockDeviceInfo.createdAt = createdAt.getUTCFullYear() + "-" + this.twoDigits(createdAt.getUTCMonth() + 1) +
                                     "-" + this.twoDigits(createdAt.getUTCDate()) + "T" + this.twoDigits(createdAt.getUTCHours()) +
                                     ":" + this.twoDigits(createdAt.getUTCMinutes()) + ":" + this.twoDigits(createdAt.getUTCSeconds()) + "+0000";
         mockDeviceInfo.payloadHex = payload;
+        mockDeviceInfo.devEUI = devEUI;
         return mockDeviceInfo;
-    }
-
-    private saveToFile(mockData: MockData) {
-        let yamlDoc = jsYaml.safeDump(mockData);
-        fs.writeFileSync("mocks/" + mockData.devEUI + ".yaml", yamlDoc);
     }
 
     private getNoiseSensorPayload(sensorData: DeSenseNoisePayload) {
