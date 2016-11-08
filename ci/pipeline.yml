@@ -171,7 +171,12 @@ jobs:
       build: binaries
       tag: version/version
       tag_as_latest: true
-    attempts: 3  
+    attempts: 3
+  - put: source
+    params:
+      repository: source
+      only_tag: true
+      tag: version/version    
 - name: major
   serial_groups: [ version ]
   plan:
