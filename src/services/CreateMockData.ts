@@ -35,7 +35,7 @@ export class CreateMockData {
 
     private toMockYaml(createdAt: Date, payload: string): Record {
         let mockDeviceInfo = new Record();
-        mockDeviceInfo.createdAt = createdAt.getUTCFullYear() + "-" + this.twoDigits(createdAt.getUTCMonth()) +
+        mockDeviceInfo.createdAt = createdAt.getUTCFullYear() + "-" + this.twoDigits(createdAt.getUTCMonth() + 1) +
                                     "-" + this.twoDigits(createdAt.getUTCDate()) + "T" + this.twoDigits(createdAt.getUTCHours()) +
                                     ":" + this.twoDigits(createdAt.getUTCMinutes()) + ":" + this.twoDigits(createdAt.getUTCSeconds()) + "+0000";
         mockDeviceInfo.payloadHex = payload;
@@ -61,18 +61,32 @@ export class CreateMockData {
     }
 
     private createRandomNoiseSensorData(createdAt: Date): DeSenseNoisePayload {
-        let randomData = this.createRandomData();
+        let randomData = this.createRandomData(createdAt);
         return { createdAt: createdAt, payloadType: PayloadType.DeSenseNoise,
                  rssi: randomData.rssi, snr: randomData.snr,
                  battery: randomData.batt, noise: randomData.noise };
     }
 
-    private createRandomData(): { rssi: number, snr: number, batt: number, noise: number } {
+    private createRandomData(createdAt: Date): { rssi: number, snr: number, batt: number, noise: number } {
         let rssi = this.randomNumber(0, 255);
         let snr = this.randomNumber(-128, 126);
         let batt = this.randomNumber(0, 65535) / 1000;
-        let noise = this.randomNumber(30, 130);
+        let noise = this.createRandomNoise(createdAt);
         return { rssi, snr, batt, noise };
+    }
+
+    private createRandomNoise(createdAt: Date): number {
+        if (createdAt.getHours() >= 22 && createdAt.getHours() <= 6) {
+            return this.randomNumber(30, 35);
+        }
+        if (createdAt.getHours() >= 7 && createdAt.getHours() <= 12) {
+            return this.randomNumber(40, 45);
+        }
+        if (createdAt.getHours() >= 13 && createdAt.getHours() <= 18) {
+            return this.randomNumber(50, 55);
+        }
+        // 14 až 21
+        return this.randomNumber(40, 45);
     }
 
     private randomNumber(from: number, to: number): number {

@@ -46,7 +46,7 @@ class Server {
   constructor() {
     //create expressjs application
     this.app = express();
-/*
+
     this.loggerConfig();
 
     this.app.use((req, res, next) => {
@@ -59,10 +59,11 @@ class Server {
     this.configCache();
     this.routes();
     this.app.listen(CRaApiConfig.serverPort);
-*/
+/*
     let fromDate = new Date("2016-01-01");
-    let toDate = new Date("2016-01-02");
+    let toDate = new Date("2017-01-01");
     new CreateMockData().createMockData("0004A30B0019D0EB", fromDate, toDate);
+*/
   }
 
   private configCache() {
