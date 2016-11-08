@@ -20,10 +20,10 @@ export class CreateMockData {
         mockData.devEUI = devEUI;
         mockData.records = [];
         while (createdAt.getTime() < toDate.getTime()) {
+            createdAt.setMinutes(createdAt.getMinutes() + 5);
             let randomData = this.createRandomNoiseSensorData(createdAt);
             let randomPayload = this.getNoiseSensorPayload(randomData);
             mockData.records.push(this.toMockYaml(devEUI, createdAt, randomPayload));
-            createdAt.setMinutes(createdAt.getMinutes() + 5);
         }
         return mockData;
     }

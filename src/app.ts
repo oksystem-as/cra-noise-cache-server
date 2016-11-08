@@ -20,12 +20,10 @@ namespace UpdateCache {
 
   export function updateCache() {
     let loadMockDeviceInfo = new LoadMockData();
-    if (!startup) {
-      loadMockDeviceInfo.loadAll(LoadDevideConfig.mockData).then((result) => {
-        startupMock = true;
-        startup = startupMock && startupProd;
-      });
-    }
+    loadMockDeviceInfo.loadAll(LoadDevideConfig.mockData).then((result) => {
+      startupMock = true;
+      startup = startupMock && startupProd;
+    });
     let loadDeviceInfo = new LoadDeviceInfo();
     loadDeviceInfo.updateAll(devEUIs).then((result) => {
         startupProd = true;

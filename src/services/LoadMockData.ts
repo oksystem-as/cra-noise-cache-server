@@ -45,7 +45,7 @@ export class LoadMockData {
         }
         if (startDate.getTime() <= stopDate.getTime()) {
             console.log("Mockovaní data pro " + devEUI + " od " + startDate + ", do " + stopDate);
-            let mockData = new CreateMockData().createMockData("0004A30B0019D0EB", startDate, stopDate);
+            let mockData = new CreateMockData().createMockData(devEUI, startDate, stopDate);
             console.log(devEUI + " namockovano " + mockData.records.length + " zaznamů.");
             this.updateDB(mockData);
         }
@@ -83,7 +83,6 @@ export class LoadMockData {
             }
         } else {
             startDate = lastRecords.createdAt;
-            startDate.setUTCSeconds(startDate.getUTCSeconds() + 1);
             return startDate;
         }
     }
