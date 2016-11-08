@@ -62,7 +62,7 @@ class Server {
 */
     let fromDate = new Date("2016-01-01");
     let toDate = new Date("2016-01-02");
-    new CreateMockData().createMockData("AAAAAA", fromDate, toDate);
+    new CreateMockData().createMockData("0004A30B0019D0EB", fromDate, toDate);
   }
 
   private configCache() {

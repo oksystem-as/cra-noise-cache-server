@@ -30,20 +30,6 @@ export class CreateMockData {
             mockData.records.push(this.toMockYaml(createdAt, randomPayload));
             createdAt.setMinutes(createdAt.getMinutes() + 5);
         }
-        /*
-        let records: Record[] = [];
-        let record1 = new Record();
-        record1.createdAt = "createdAt1";
-        record1.payloadHex = "payloadHex1";
-        records.push(record1);
-        let record2 = new Record();
-        record2.createdAt = "createdAt2";
-        record2.payloadHex = "payloadHex2";
-        records.push(record2);
-        let mocData = new MockData();
-        mocData.devEUI = "aaaaaaaaaaaaa";
-        mocData.records = records;        
-        */
         this.saveToFile(mockData);
     }
 
@@ -58,7 +44,7 @@ export class CreateMockData {
 
     private saveToFile(mockData: MockData) {
         let yamlDoc = jsYaml.safeDump(mockData);
-        console.log(yamlDoc);
+        fs.writeFileSync("mocks/" + mockData.devEUI + ".yaml", yamlDoc);
     }
 
     private getNoiseSensorPayload(sensorData: DeSenseNoisePayload) {
