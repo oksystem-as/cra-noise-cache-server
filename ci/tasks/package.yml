@@ -1,0 +1,18 @@
+platform: linux
+
+image_resource:
+  type: docker-image
+  source: {repository: node,
+           tag: onbuild           
+          }
+
+inputs:
+- name: binaries
+
+outputs:
+- name: package
+
+run:
+    path: sh
+    args: ["./ci/tasks/package.sh"]
+    dir: ./binaries
