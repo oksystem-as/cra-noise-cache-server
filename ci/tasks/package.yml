@@ -8,11 +8,20 @@ image_resource:
 
 inputs:
 - name: source
+- name: binaries
 
 outputs:
-- name: binaries
+- name: package
 
 run:
     path: sh
-    args: ["./ci/tasks/pack.sh"]
-    dir: ./source
+    args:
+      - -exc
+      - |
+        ls -l
+        cd binaries
+        pwd
+        ls -l
+        tar -cf ../package/binaries.tar ./
+        ls -l ../package
+        tar -tvf ../package/binaries.tar
