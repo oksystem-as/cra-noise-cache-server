@@ -134,7 +134,7 @@ resources:
   source:
     user: oksystem-as
     repository: cra-noise-cache-server
-    access_token: e9e6880a70266eb7b0295f56aad46157ad342a13
+    access_token: {{ghtoken}}
 
 jobs:
 - name: build
@@ -167,12 +167,19 @@ jobs:
   plan:
   - aggregate:
     - get: source
+      passed: [test]
     - get: version
       trigger: true
   - task: build
     file: source/ci/tasks/build.yml                  
   - task: package
     file: source/ci/tasks/package.yml    
+  - put: registry-release
+    params:
+      build: binaries
+      tag: version/version
+      tag_as_latest: true
+    attempts: 3
   - put: source
     params:
       repository: source
