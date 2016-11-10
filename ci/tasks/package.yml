@@ -21,6 +21,6 @@ run:
         cd binaries
         pwd
         ls -l
-        tar -cf ../package/binaries.tar ./
-        ls -l ../package
-        tar -tvf ../package/binaries.tar
+        tar -czvf package/cra-noise-cache-server.tar.gz binaries
+        ls -l package
+        tar -tvf package/cra-noise-cache-server.tar.gz
