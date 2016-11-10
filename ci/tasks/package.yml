@@ -23,4 +23,5 @@ run:
         cd binaries
         pwd
         ls -l
-        ../source/ci/build.sh
+        ls -l ../source/ci/tasks/
+        ../source/ci/tasks/build.sh
