@@ -14,5 +14,5 @@ outputs:
 
 run:
     path: sh
-    args: ["./ci/tasks/package.sh"]
+    args: ["../source/ci/tasks/package.sh"]
     dir: ./binaries
