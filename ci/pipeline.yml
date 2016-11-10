@@ -190,7 +190,7 @@ jobs:
       name: version/version
       tag: version/version
       globs:
-      - package/binaries.tar        
+      - package/cra-noise-cache-server.tar.gz        
 - name: major
   serial_groups: [ version ]
   plan:
