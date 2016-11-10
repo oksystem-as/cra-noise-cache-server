@@ -15,4 +15,5 @@ outputs:
 
 run:
     path: ls
+    args: ["../source/ci/tasks/"]
     dir: ./binaries
