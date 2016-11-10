@@ -24,4 +24,4 @@ run:
         pwd
         ls -l
         ls -l ../source/ci/tasks/
-        sh ../source/ci/tasks/build.sh
+        sh ../source/ci/tasks/pack.sh
