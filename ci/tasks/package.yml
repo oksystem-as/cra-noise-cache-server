@@ -15,5 +15,5 @@ outputs:
 
 run:
     path: sh
-    args: ["./ci/tasks/build.sh"]
+    args: ["./ci/tasks/pack.sh"]
     dir: ./source
