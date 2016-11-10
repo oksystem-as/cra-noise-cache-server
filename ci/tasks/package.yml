@@ -7,12 +7,11 @@ image_resource:
           }
 
 inputs:
+- name: source
 - name: binaries
 
 outputs:
 - name: package
 
 run:
-    path: sh
-    args: ["../source/ci/tasks/package.sh"]
-    dir: ./binaries
+    path: ls

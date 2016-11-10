@@ -167,19 +167,12 @@ jobs:
   plan:
   - aggregate:
     - get: source
-      passed: [test]
     - get: version
       trigger: true
   - task: build
     file: source/ci/tasks/build.yml                  
   - task: package
-    file: source/ci/tasks/package.yml
-  - put: registry-release
-    params:
-      build: binaries
-      tag: version/version
-      tag_as_latest: true
-    attempts: 3    
+    file: source/ci/tasks/package.yml    
   - put: source
     params:
       repository: source
