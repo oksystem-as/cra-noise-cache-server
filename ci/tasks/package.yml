@@ -15,14 +15,5 @@ outputs:
 
 run:
     path: sh
-    args:
-      - -exc
-      - |
-        ls -l
-        echo "ahoj1"
-        ls -l ./source
-        echo "ahoj2"
-        ls -l ./source/ci
-        echo "ahoj3"
-        ls -l ./source/ci/tasks
-        echo "ahoj4"
+    args: ["../source/ci/tasks/package.sh"]
+    dir: ./binaries
