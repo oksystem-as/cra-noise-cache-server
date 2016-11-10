@@ -14,6 +14,5 @@ outputs:
 - name: package
 
 run:
-    path: ls -l
-    args: ["../source/ci/tasks/"]
+    path: ls
     dir: ./binaries
