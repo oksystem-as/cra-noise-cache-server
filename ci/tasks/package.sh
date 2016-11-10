@@ -3,5 +3,5 @@
 set -e -x
 
 ls -l
-tar -cf ../package/binaries.tar ./
+tar -cf ../package/binaries.tar ../binaries/
 ls -l ../package/
