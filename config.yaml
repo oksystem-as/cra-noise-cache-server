@@ -9,6 +9,9 @@ cutData:
 - start: 2016-10-26
   devEUIs:
   - "0004A30B0019D0EA"
+- start: 2016-10-25
+  devEUIs:
+  - "0004A30B0019B046"
 mockData:
 - start: 2016-10-01
   devEUIs:
