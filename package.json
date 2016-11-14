@@ -1,6 +1,6 @@
 {
-  "name": "iot-lora-cra-cache",
-  "version": "0.1.0",
+  "name": "cra-noise-cache-server",
+  "version": "1.0.4",
   "description": "",
   "scripts": {
     "grunt": "grunt",
