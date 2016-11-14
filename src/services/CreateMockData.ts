@@ -68,16 +68,19 @@ export class CreateMockData {
 
     private createRandomNoise(createdAt: Date): number {
         if (createdAt.getHours() >= 22 && createdAt.getHours() <= 6) {
-            return this.randomNumber(30, 35);
+            return this.randomNumber(20, 28);
         }
-        if (createdAt.getHours() >= 7 && createdAt.getHours() <= 12) {
-            return this.randomNumber(40, 45);
+        if (createdAt.getHours() >= 8 && createdAt.getHours() <= 12) {
+            return this.randomNumber(30, 36);
         }
         if (createdAt.getHours() >= 13 && createdAt.getHours() <= 18) {
-            return this.randomNumber(50, 55);
+            return this.randomNumber(35, 40);
         }
-        // 14 až 21
-        return this.randomNumber(40, 45);
+        if (createdAt.getHours() >= 19 && createdAt.getHours() <= 20) {
+            return this.randomNumber(30, 36);
+        }
+        // 7 hodina a 21 hodina
+        return this.randomNumber(25, 28);
     }
 
     private randomNumber(from: number, to: number): number {
