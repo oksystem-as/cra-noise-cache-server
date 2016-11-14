@@ -169,7 +169,6 @@ jobs:
     - get: source
       passed: [test]
     - get: version
-      trigger: true
   - task: build
     file: source/ci/tasks/build.yml                  
   - task: package
