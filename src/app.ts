@@ -23,13 +23,11 @@ namespace UpdateCache {
     loadMockDeviceInfo.loadAll(LoadDevideConfig.mockData).then((result) => {
       startupMock = true;
       startup = startupMock && (startupWSProd || startupFileProd);
-      console.log(" updateCache loadMockDeviceInfo ", UpdateCache.startup );
     });
     let loadDeviceInfo = new LoadDeviceInfo();
     loadDeviceInfo.updateAll(LoadDevideConfig.loadData).then((result) => {
         startupWSProd = true;
         startup = startupMock && (startupWSProd || startupFileProd);
-         console.log(" updateCache loadDeviceInfo ", UpdateCache.startup );
     });
   }
 }
