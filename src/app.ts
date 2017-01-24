@@ -13,22 +13,24 @@ var expressWinston = require("express-winston");
 require("console-winston")();
 
 namespace UpdateCache {
-  export let devEUIs: string[];
   export let startup: boolean = false;
   export let startupMock: boolean = false;
-  export let startupProd: boolean = false;
+  export let startupWSProd: boolean = false;
+  export let startupFileProd: boolean = false;
 
   export function updateCache() {
     let loadMockDeviceInfo = new LoadMockData();
     loadMockDeviceInfo.loadAll(LoadDevideConfig.mockData).then((result) => {
       startupMock = true;
-      startup = startupMock && startupProd;
+      startup = startupMock && (startupWSProd || startupFileProd);
+      console.log(" updateCache loadMockDeviceInfo ", UpdateCache.startup );
     });
     let loadDeviceInfo = new LoadDeviceInfo();
-    loadDeviceInfo.updateAll(devEUIs).then((result) => {
-        startupProd = true;
-        startup = startupMock && startupProd;
-      });
+    loadDeviceInfo.updateAll(LoadDevideConfig.loadData).then((result) => {
+        startupWSProd = true;
+        startup = startupMock && (startupWSProd || startupFileProd);
+         console.log(" updateCache loadDeviceInfo ", UpdateCache.startup );
+    });
   }
 }
 
@@ -70,9 +72,13 @@ class Server {
     if (cacheConfig.basePath !== undefined && cacheConfig.basePath !== null) {
       CRaApiConfig.basePath = cacheConfig.basePath;
     }
-    UpdateCache.devEUIs = cacheConfig.devEUIs;
+    LoadDevideConfig.loadData = cacheConfig.loadData;
     LoadDevideConfig.cutData = cacheConfig.cutData;
     LoadDevideConfig.mockData = cacheConfig.mockData;
+
+    let loadDeviceInfo = new LoadDeviceInfo();
+    loadDeviceInfo.loadFromFiles(LoadDevideConfig.loadData);
+    UpdateCache.startupFileProd = true;
 
     UpdateCache.updateCache();
     setInterval(function() {

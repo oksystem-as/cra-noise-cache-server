@@ -1,6 +1,12 @@
 /// <reference path="_all.d.ts" />
 
+export enum SourceType {
+    FILE = <any>"file",
+    WS = <any>"ws",
+}
+
 export namespace LoadDevideConfig {
+    export let loadData: { source: SourceType, devEUIs: string[] }[];
     export let cutData: { start: string, devEUIs: string[] }[];
     export let mockData: { start: string, stop: string, devEUIs: string[] }[];
     /** První datum od kterého se načítají údaje ze senzotů */

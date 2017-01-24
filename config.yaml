@@ -1,10 +1,19 @@
 token: "kBPIDfNdSfk8fkATerBa6ct6yshdPbOX"
 basePath: "http://api.pripoj.me"
 serverPort: 8082
-devEUIs:
-- "0004A30B0019D0EA"
-- "0004A30B0019B046"
-- "0004A30B0019B1CA"
+# je mozne definovat odkud se budou vstupy nacitat 
+# volba "file" - nacte se ze souboru a to jen na zacatku 
+#			   - soubor se musi pro 0004A30B0019D0EA jmenovat 0004A30B0019D0EA.json
+# volba "ws" - nacte se pres web service a provadi pravidelne aktualizace
+loadData:
+  - source: "file"
+    devEUIs:
+      - "0004A30B0019D0EA"
+      - "0004A30B0019B046"
+      - "0004A30B0019B1CA"
+  - source: "ws"
+    devEUIs: []
+# zatim se tyka pouze devEUIs pro volbu "ws"
 cutData:
 - start: 2016-10-26
   devEUIs:

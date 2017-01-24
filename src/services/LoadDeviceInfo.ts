@@ -1,10 +1,11 @@
 /// <reference path="../_all.d.ts" />
 
-import { LoadDevideConfig } from "../Config";
+import { LoadDevideConfig, SourceType } from "../Config";
 import { DBLoki } from "./BDLoki";
 import { Result, DeviceInfo, LastRecord } from "./DeviceInfoValue";
 import { Promise } from "es6-promise";
-import { CRaService } from "./CRaService";
+import { CRaWebService } from "./CRaWebService";
+import { CRaFileService } from "./CRaFileService";
 import * as Lokijs from "lokijs";
 
 /**
@@ -14,33 +15,59 @@ export class LoadDeviceInfo {
 
     private deviceData: LokiCollection<DeviceInfo>;
     private lastData: LokiCollection<LastRecord>;
+    private cRaFileService = new CRaFileService();
 
     constructor() {
         this.deviceData = DBLoki.deviceData;
         this.lastData = DBLoki.lastData;
     }
-
-    updateAll(devEUIs: string[]): Promise<boolean> {
-        return new Promise<boolean>((resolve, reject) => {
-            let devEUIsComplete = Array<string>();
-            devEUIs.forEach((devEUI) => {
-                this.update(devEUI).then((result) => {
-                    if (devEUIsComplete.find((valeu) => valeu === result) == null) {
-                        devEUIsComplete.push(result);
-                    }
-                    if (devEUIsComplete.length === devEUIs.length) {
-                        resolve(true);
-                    }
+    /**
+     * nacte data pro vsechny devEUIs ze souboru, soubor se musi jmenovat stejne jako je oznaceni devEUI + .json
+     */
+    loadFromFiles(loadData: { source: SourceType, devEUIs: string[] }[]) {
+        loadData.forEach((load) => {
+            if (load.source === SourceType.FILE) {
+                load.devEUIs.forEach((devEUI) => {
+                    this.loadFromFile(devEUI);
                 });
+            }
+        });
+    }
+
+    /**
+     * nacte data jen z jednoho souboru, soubor se musi jmenovat stejne jako je oznaceni devEUI + .json
+     */
+    loadFromFile(devEUI: string) {
+        let result = this.cRaFileService.getDeviceInfo(devEUI);
+        this.updateDB(devEUI, result);
+        console.log(devEUI + ": Načteno " + result._meta.count + " záznamů ze souboru.");
+    }
+
+    updateAll(loadData: { source: SourceType, devEUIs: string[] }[]): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => {
+            loadData.forEach((load) => {
+                if (load.source === SourceType.WS) {
+                let devEUIsComplete = Array<string>();
+                    load.devEUIs.forEach((devEUI) => {
+                        this.update(devEUI).then((result) => {
+                            if (devEUIsComplete.find((valeu) => valeu === result) == null) {
+                                devEUIsComplete.push(result);
+                            }
+                            if (devEUIsComplete.length === load.devEUIs.length) {
+                                resolve(true);
+                            }
+                        });
+                    });
+                }
             });
         });
     }
 
     update(devEUI: string): Promise<string> {
-        let cRaService = new CRaService();
+        let cRaWebService = new CRaWebService();
         let startDate = this.getStartDate(devEUI);
 
-        let promise = cRaService.getDeviceInfo(devEUI, LoadDevideConfig.defautlLimit, startDate, "asc");
+        let promise = cRaWebService.getDeviceInfo(devEUI, LoadDevideConfig.defautlLimit, startDate, "asc");
         return new Promise<string>((resolve, reject) => {
             promise.then((result) => {
                 this.updateDB(devEUI, result);
