@@ -47,7 +47,7 @@ export class LoadDeviceInfo {
         return new Promise<boolean>((resolve, reject) => {
             loadData.forEach((load) => {
                 if (load.source === SourceType.WS) {
-                let devEUIsComplete = Array<string>();
+                    let devEUIsComplete = Array<string>();
                     load.devEUIs.forEach((devEUI) => {
                         this.update(devEUI).then((result) => {
                             if (devEUIsComplete.find((valeu) => valeu === result) == null) {
