@@ -14,4 +14,7 @@ cp ./config.yaml ../binaries/
 cp ./package.json ../binaries/
 cp ./Dockerfile ../binaries/
 cp ./start.bat ../binaries/
+cp ./0004A30B0019B046.json ../binaries/
+cp ./0004A30B0019B1CA.json ../binaries/
+cp ./0004A30B0019B1CA.json ../binaries/
 ls -l ../binaries/
